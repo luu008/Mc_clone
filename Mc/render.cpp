@@ -1,8 +1,3 @@
-/*
-* 2024/6/1
-* 
-* 
-*/
 #include <glad/glad.h>
 
 extern "C"
