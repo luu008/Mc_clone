@@ -32,7 +32,7 @@ public:
 	text(const char* trueType, unsigned int width, unsigned int height);
     int loadText(GLFWwindow* window);
     int RenderText(Shader& shader, std::wstring text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, bool type, int size);
-    int RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, bool type, int size);
+    int RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
     void setUsingSize(unsigned int width, unsigned int height);
     int deleteVaoAndVbo();
     int getError();
@@ -63,14 +63,14 @@ int text::loadText(GLFWwindow* window)
     // All functions return a value different than 0 whenever an error occurred
     if (FT_Init_FreeType(&ft))
     {
-        std::cout << "------------------------------------" << std::endl << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        std::cout << "------------------------------------\nERROR::FREETYPE: Could not init FreeType Library\n";
         return -1;
     }
     // Load font as face
     FT_Face face;
     if (FT_New_Face(ft, ID, 0, &face))
     {
-        std::cout << "------------------------------------" << std::endl << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        std::cout << "------------------------------------\nERROR::FREETYPE: Failed to load font\n";
         return -1;
     }
     // Set size to load glyphs as
@@ -143,7 +143,9 @@ int text::loadText(GLFWwindow* window)
     loadType = true;
     return 0;
 }
-int text::RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, bool type, int size)
+
+
+int text::RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
     if (!loadType)
     {
@@ -193,8 +195,8 @@ int text::RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLf
         shader.setVec3("textColor", color);
         shader.setInt("text", 2);
         shader.setMat4("projection", projection);
-        shader.setBool("type", type);
-        shader.setInt("size", size);
+        shader.setBool("type", false);
+        shader.setInt("size", 0);
 
         glBindTexture(GL_TEXTURE_2D, ch.TextureID);
         glActiveTexture(GL_TEXTURE2);
@@ -210,7 +212,7 @@ int text::RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLf
     return 0;
 }
 //Õâ¸öÊÇwstring
-int text::RenderText(Shader& shader, std::wstring text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, bool type, int size)
+int text::RenderText(Shader& shader, std::wstring text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color, bool type = false, int size = 32)
 {
     if (!loadType)
     {

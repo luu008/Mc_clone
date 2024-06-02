@@ -1,3 +1,11 @@
+/*
+* GTX1060 
+* 
+* 
+* 
+* 
+*/
+
 #include <glad/glad.h>
 
 extern "C"
@@ -13,15 +21,14 @@ extern "C"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-        
+
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
 #include <ft2build.h>
-        
-//#include <learnopengl/model.h> 
 
 #include <irrKlang/irrKlang.h>
 
+#include <learnopengl/truck.h>
 #include <learnopengl/shader_m.h>
 #include <learnopengl/camera.h>
 #include <learnopengl/text.h>
@@ -76,8 +83,8 @@ unsigned int RBO;
 unsigned int framebuffer;
 
 
-// set up vertex data (and buffer(s)) and configure vertex attributes
-// ------------------------------------------------------------------
+// 顶点数组
+// --------
 glm::vec3 position[100000];
 glm::mat4 models[100000];
 
@@ -89,7 +96,7 @@ int main()
     if (!engine)
         return -1; // error starting up the engine
 
-    engine->play2D("WHITE_NIGHT.flac", true);
+    //engine->play2D("WHITE_NIGHT.flac", true);
 
     // 初始化GLFW
     // ----------
@@ -247,7 +254,7 @@ int main()
     int highFps = 0;
     int lastSettlement = 1;
 
-    std::string text_str = "NOW:" + std::to_string(Fps) + " LOW:" + std::to_string(100);
+    std::wstring text_str = L"无数据";
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -338,7 +345,7 @@ int main()
         {
             FPSflag = true;
             Fps = (int)(1.0f / deltaTime);
-            text_str = "now: " + std::to_string(Fps) + " / low: " + std::to_string(lowFps) + " / high: " + std::to_string(highFps);
+            text_str = std::to_wstring(Fps) + L"  最低: " + std::to_wstring(lowFps) + L"  最高: " + std::to_wstring(highFps);
             lowFps = -1;
             highFps = 0;
             lastSettlement = (int)floor(glfwGetTime());
@@ -349,9 +356,9 @@ int main()
         }
         // 渲染文字
         text.setUsingSize(WIN_WIDTH, WIN_HEIGHT);
-        
-        text.RenderText(textShader, text_str.c_str(), 1.0f, 585.0f, 0.25f, glm::vec3(0.5, 0.8f, 0.2f), true, 14);
-        text.RenderText(textShader, L"你好，世界！", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.2f, 0.2f), true, 14);
+
+        text.RenderText(textShader, text_str, 1.0f, 585.0f, 0.25f, glm::vec3(0.5, 0.8f, 0.2f));
+        text.RenderText(textShader, L"你好，世界！", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.2f, 0.2f), true, 32);
 
         // 绑定回原本的帧缓存
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
