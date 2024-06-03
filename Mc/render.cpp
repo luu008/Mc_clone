@@ -1,9 +1,5 @@
 /*
-* GTX1060 
-* 
-* 
-* 
-* 
+* GTX1060 & intel(R) UHD graphics 620 2K: 50 Fps
 */
 
 #include <glad/glad.h>
